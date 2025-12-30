@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'linux' }
+    agent { label 'linux' }  // SSH agent label
 
     parameters {
         string(
@@ -18,7 +18,7 @@ pipeline {
 
         stage('Checkout Main Branch') {
             steps {
-                echo "Checking out main branch"
+                echo "Checking out main branch from repo: ${params.GIT_REPO}"
                 git branch: 'main',
                     url: "${params.GIT_REPO}",
                     credentialsId: "${params.githubConnection}"
@@ -28,8 +28,8 @@ pipeline {
         stage('Run Folder Creation Script') {
             steps {
                 echo "Running folder_creator.sh"
-                dir('Jenkins/create-folder') {
-                    sh 'chmod +x folder_creator.sh'
+                dir('Jenkins/create-folder') {   // go into the folder where scripts are
+                    sh 'chmod +x folder_creator.sh'   // ensure executable
                     sh './folder_creator.sh'
                 }
             }
@@ -55,7 +55,7 @@ pipeline {
 
     post {
         success {
-            echo "Pipeline finished successfully!"
+            echo "Pipeline completed successfully!"
         }
         failure {
             echo "Pipeline failed. Check logs above."
