@@ -1,51 +1,25 @@
 pipeline {
-    agent { label 'linux' }
-
-    parameters {
-        string(
-            name: 'githubConnection',
-            defaultValue: 'github-creds',
-            description: 'Jenkins Credential ID for GitHub'
-        )
-        string(
-            name: 'GIT_REPO',
-            defaultValue: 'https://github.com/IProgrammercube/software-installation.git',
-            description: 'GitHub Repo URL'
-        )
-    }
+    agent any
 
     stages {
 
         stage('Checkout Main Branch') {
             steps {
-                echo "Checking out main branch from repo: ${params.GIT_REPO}"
                 git branch: 'main',
-                    url: "${params.GIT_REPO}",
-                    credentialsId: "${params.githubConnection}"
+                    url: 'https://github.com/IProgrammercube/software-installation.git',
+                    credentialsId: 'githubConnection'
             }
         }
 
-        stage('Print Hello') {
+        stage('Print Hello World from Folder') {
             steps {
-                echo "This is just a test"
-                sh 'echo "Hello from Jenkins pipeline!"'
+                dir('Jenkins/create-folder') {
+                    sh 'echo "---- Listing files ----"'
+                    sh 'ls -l'
+                    sh 'echo "---- Printing Hello World ----"'
+                    sh 'cat hello.txt'
+                }
             }
-        }
-
-        stage('Show Date') {
-            steps {
-                sh 'date'
-            }
-        }
-
-    }
-
-    post {
-        success {
-            echo "Pipeline finished successfully!"
-        }
-        failure {
-            echo "Pipeline failed. Check logs above."
         }
     }
 }
