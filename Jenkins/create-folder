@@ -2,23 +2,19 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Checkout Main Branch') {
+        stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/IProgrammercube/software-installation.git',
-                    credentialsId: 'githubConnection'
+                checkout scm
             }
         }
 
-        stage('Print Hello World from Folder') {
+        stage('Run create-folder file') {
             steps {
-                dir('Jenkins/create-folder') {
-                    sh 'echo "---- Listing files ----"'
-                    sh 'ls -l'
-                    sh 'echo "---- Printing Hello World ----"'
-                    sh 'cat hello.txt'
-                }
+                sh '''
+                    ls -l Jenkins
+                    chmod +x Jenkins/create-folder
+                    ./Jenkins/create-folder
+                '''
             }
         }
     }
