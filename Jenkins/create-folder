@@ -15,6 +15,7 @@ pipeline {
 
         stage('Run Folder Creation Script') {
             steps {
+                echo 'this is folder Creation'
                 //sh './folder_creator.sh'
             }
         }
