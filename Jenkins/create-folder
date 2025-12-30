@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'linux' }  // your SSH agent label
+    agent { label 'linux' }
 
     parameters {
         string(
@@ -25,47 +25,50 @@ pipeline {
                 echo "Checking out main branch from repo: ${params.GIT_REPO}"
                 git branch: 'main',
                     url: "${params.GIT_REPO}",
-                    credentialsId: "${params.githubConnection}"  // Fixed parameter name
+                    credentialsId: "${params.githubConnection}"
             }
         }
 
         stage('Run Folder Creation Script') {
             steps {
-                echo "Running folder_creator.sh to create folder"
+                echo "Running folder_creator.sh from Jenkins/create-folder"
                 script {
-                    // Execute the script and store folder name
-                    sh '''
-                        if [ -f folder_creator.sh ]; then
-                            chmod +x folder_creator.sh
-                            ./folder_creator.sh
-                        else
-                            echo "folder_creator.sh not found!"
-                        fi
-                    '''
-                    BUILD_FOLDER = sh(script: 'cat last_build_folder.txt', returnStdout: true).trim()
-                    echo "Build folder for this run: ${BUILD_FOLDER}"
+                    dir('Jenkins/create-folder') {   // Change to repo subdirectory
+                        sh '''
+                            if [ -f folder_creator.sh ]; then
+                                chmod +x folder_creator.sh
+                                ./folder_creator.sh
+                            else
+                                echo "folder_creator.sh not found!"
+                            fi
+                        '''
+                        BUILD_FOLDER = sh(script: 'cat last_build_folder.txt', returnStdout: true).trim()
+                        echo "Build folder for this run: ${BUILD_FOLDER}"
+                    }
                 }
             }
         }
 
         stage('Show Date') {
             steps {
-                echo "Running show_date.sh"
-                sh '''
-                    if [ -f show_date.sh ]; then
-                        chmod +x show_date.sh
-                        ./show_date.sh
-                    else
-                        echo "show_date.sh not found!"
-                    fi
-                '''
+                echo "Running show_date.sh from Jenkins/create-folder"
+                dir('Jenkins/create-folder') {
+                    sh '''
+                        if [ -f show_date.sh ]; then
+                            chmod +x show_date.sh
+                            ./show_date.sh
+                        else
+                            echo "show_date.sh not found!"
+                        fi
+                    '''
+                }
             }
         }
 
         stage('List Build Folder Contents') {
             steps {
                 echo "Listing contents of the build folder"
-                sh "ls -l ${BUILD_FOLDER}"
+                sh "ls -l Jenkins/create-folder/${BUILD_FOLDER}"
             }
         }
     }
