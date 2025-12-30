@@ -1,29 +1,81 @@
 pipeline {
-    agent { label 'linux' }
+    agent { label 'linux' }  // your SSH agent label
+
     parameters {
-        string(name: 'githubConnection', defaultValue: 'github-creds', description: 'Jenkins Credential ID for GitHub')
-        string(name: 'GIT_REPO', defaultValue: 'https://github.com/IProgrammercube/software-installation.git', description: 'GitHub Repo URL')
+        string(
+            name: 'githubConnection',
+            defaultValue: 'github-creds',
+            description: 'Jenkins Credential ID for GitHub'
+        )
+        string(
+            name: 'GIT_REPO',
+            defaultValue: 'https://github.com/IProgrammercube/software-installation.git',
+            description: 'GitHub Repo URL'
+        )
     }
+
+    environment {
+        BUILD_FOLDER = ''  // Will store the dynamic folder name
+    }
+
     stages {
+
         stage('Checkout Main Branch') {
             steps {
+                echo "Checking out main branch from repo: ${params.GIT_REPO}"
                 git branch: 'main',
                     url: "${params.GIT_REPO}",
-                    credentialsId: "${params.GIT_CREDENTIALS_ID}"
+                    credentialsId: "${params.githubConnection}"  // Fixed parameter name
             }
         }
 
         stage('Run Folder Creation Script') {
             steps {
-                echo 'this is folder Creation'
-                //sh './folder_creator.sh'
+                echo "Running folder_creator.sh to create folder"
+                script {
+                    // Execute the script and store folder name
+                    sh '''
+                        if [ -f folder_creator.sh ]; then
+                            chmod +x folder_creator.sh
+                            ./folder_creator.sh
+                        else
+                            echo "folder_creator.sh not found!"
+                        fi
+                    '''
+                    BUILD_FOLDER = sh(script: 'cat last_build_folder.txt', returnStdout: true).trim()
+                    echo "Build folder for this run: ${BUILD_FOLDER}"
+                }
             }
         }
 
         stage('Show Date') {
             steps {
-                //sh './show_date.sh'
+                echo "Running show_date.sh"
+                sh '''
+                    if [ -f show_date.sh ]; then
+                        chmod +x show_date.sh
+                        ./show_date.sh
+                    else
+                        echo "show_date.sh not found!"
+                    fi
+                '''
             }
+        }
+
+        stage('List Build Folder Contents') {
+            steps {
+                echo "Listing contents of the build folder"
+                sh "ls -l ${BUILD_FOLDER}"
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline completed successfully! Build folder: ${BUILD_FOLDER}"
+        }
+        failure {
+            echo "Pipeline failed. Check logs for details."
         }
     }
 }
