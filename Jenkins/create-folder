@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'linux' }  // SSH agent label
+    agent { label 'linux' }
 
     parameters {
         string(
@@ -25,37 +25,24 @@ pipeline {
             }
         }
 
-        stage('Run Folder Creation Script') {
+        stage('Print Hello') {
             steps {
-                echo "Running folder_creator.sh"
-                dir('Jenkins/create-folder') {   // go into the folder where scripts are
-                    sh 'chmod +x folder_creator.sh'   // ensure executable
-                    sh './folder_creator.sh'
-                }
+                echo "This is just a test"
+                sh 'echo "Hello from Jenkins pipeline!"'
             }
         }
 
         stage('Show Date') {
             steps {
-                echo "Running show_date.sh"
-                dir('Jenkins/create-folder') {
-                    sh 'chmod +x show_date.sh'
-                    sh './show_date.sh'
-                }
+                sh 'date'
             }
         }
 
-        stage('List Folder Contents') {
-            steps {
-                echo "Listing contents of Jenkins/create-folder"
-                sh 'ls -l Jenkins/create-folder'
-            }
-        }
     }
 
     post {
         success {
-            echo "Pipeline completed successfully!"
+            echo "Pipeline finished successfully!"
         }
         failure {
             echo "Pipeline failed. Check logs above."
