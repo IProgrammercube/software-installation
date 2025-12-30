@@ -8,12 +8,12 @@ pipeline {
             }
         }
 
-        stage('Run create-folder file') {
+        stage('Run create-folder script') {
             steps {
                 sh '''
                     ls -l Jenkins
                     chmod +x Jenkins/create-folder
-                    ./Jenkins/create-folder
+                    Jenkins/create-folder
                 '''
             }
         }
