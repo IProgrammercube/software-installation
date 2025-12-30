@@ -1,0 +1,28 @@
+pipeline {
+    agent { label 'linux' }
+    parameters {
+        string(name: 'githubConnection', defaultValue: 'github-creds', description: 'Jenkins Credential ID for GitHub')
+        string(name: 'GIT_REPO', defaultValue: 'https://github.com/IProgrammercube/software-installation.git', description: 'GitHub Repo URL')
+    }
+    stages {
+        stage('Checkout Main Branch') {
+            steps {
+                git branch: 'main',
+                    url: "${params.GIT_REPO}",
+                    credentialsId: "${params.GIT_CREDENTIALS_ID}"
+            }
+        }
+
+        stage('Run Folder Creation Script') {
+            steps {
+                //sh './folder_creator.sh'
+            }
+        }
+
+        stage('Show Date') {
+            steps {
+                //sh './show_date.sh'
+            }
+        }
+    }
+}
