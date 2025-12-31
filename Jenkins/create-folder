@@ -5,7 +5,7 @@ pipeline {
         string(
             name: 'FOLDER_NAME',
             defaultValue: 'demo-folder',
-            description: 'Enter folder name'
+            description: 'Enter folder name to create'
         )
     }
 
@@ -16,11 +16,13 @@ pipeline {
             }
         }
 
-        stage('Run create-folder script') {
+        stage('Create Folder') {
             steps {
                 sh '''
-                   echo "I am in create Folder"
-                   echo "User entered folder name: ${FOLDER_NAME}"
+                   echo "Creating folder: ${FOLDER_NAME}"
+                   mkdir -p "${FOLDER_NAME}"
+                   echo "Folder created successfully"
+                   ls -ld "${FOLDER_NAME}"
                 '''
             }
         }
