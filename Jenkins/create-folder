@@ -1,6 +1,14 @@
 pipeline {
     agent any
 
+    parameters {
+        string(
+            name: 'FOLDER_NAME',
+            defaultValue: 'demo-folder',
+            description: 'Enter folder name'
+        )
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -11,7 +19,8 @@ pipeline {
         stage('Run create-folder script') {
             steps {
                 sh '''
-                   echo 'I am in create Folder'
+                   echo "I am in create Folder"
+                   echo "User entered folder name: ${FOLDER_NAME}"
                 '''
             }
         }
