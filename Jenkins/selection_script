@@ -5,7 +5,8 @@ pipeline
         choice(
                 name: 'ACTION',
                 choices:[
-                        'Create Folder', 
+                        'create-folder',
+                        'selection_script', 
                         'Add File',
                         'Append text', 
                         'Replace text'
