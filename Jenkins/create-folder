@@ -25,7 +25,7 @@ pipeline {
                         echo "Folder already exists"
                     else
                         echo "Creating folder"
-                        mkdir "$FOLDER_NAME"
+                        
                     fi
                 '''
             }
