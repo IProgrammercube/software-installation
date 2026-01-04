@@ -1,30 +1,33 @@
-pipeline {
+pipleline{
     agent any
 
-    parameters {
-        string(
-            name: 'FOLDER_NAME',
-            defaultValue: 'demo-folder',
-            description: 'Enter folder name to create'
-        )
+    // Taking Value from user as parameter
+    parameters{
+        string(name: 'FOLDER-NAME', defaultValue:'NA' , description:'Enter your Folder name')
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
+    stages
+    {
+        stage('checkout SCM')
+        {
+            steps
+            {
+                checkout SCM
             }
+        }
+        stage('crete folder')
+        {
+                steps{
+                    sh '''
+                        if[ -d "${FOLDER-NAME} ; "] then
+                            echo "folder name is Already Exists"
+                        else
+                            echo "Create Folder"
+                            fi
+                    '''
+                }
         }
 
-        stage('Create Folder') {
-            steps {
-                sh '''
-                   echo "Creating folder: ${FOLDER_NAME}"
-                   mkdir -p "${FOLDER_NAME}"
-                   echo "Folder created successfully"
-                   ls -ld "${FOLDER_NAME}"
-                '''
-            }
-        }
     }
+
 }
