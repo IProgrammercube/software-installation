@@ -25,7 +25,7 @@ pipeline
                   if [ -d "$FOLDER_NAME" ]; then
                       echo "Folder name is exists"
                   else
-                      mkdir -r "$FOLDER_NAME"
+                      mkdir -p "$FOLDER_NAME"
                       echo "Listing Directory ${pwd}"
                       ls -lrth   
                   fi
