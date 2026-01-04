@@ -18,14 +18,57 @@ pipeline {
                 checkout scm
             }
         }
-        stage('select option')
-        {
-            steps
-            {
-                echo "you selected ${params.ACTION}"
-            }
 
+        stage('List Scripts in Jenkins Folder') {
+            steps {
+                script {
+                    // List files in Jenkins folder
+                    def scriptDir = "${pwd()}/Jenkins"
+                    def files = []
+                    if (fileExists(scriptDir)) {
+                        files = sh(
+                            script: "ls -1 ${scriptDir}",
+                            returnStdout: true
+                        ).trim().split("\n")
+                    }
+                    
+                    echo "Available scripts in Jenkins/: ${files}"
+
+                    // Fail if no scripts found
+                    if (files.size() == 0) {
+                        error "No scripts found in Jenkins/ folder!"
+                    }
+
+                    // For demonstration, you can print or select dynamically
+                    // In Active Choices plugin, this list can populate a dropdown
+                }
+            }
+        }
+
+        stage('Run Selected Script') {
+            steps {
+                script {
+                    // Ensure user selected a script
+                    if (params.SCRIPT_TO_RUN == 'Select a script first') {
+                        error "No script selected! Aborting..."
+                    }
+
+                    echo "Running script: ${params.SCRIPT_TO_RUN}"
+
+                    // Run the script with error highlighting
+                    def status = sh(
+                        script: "bash Jenkins/${params.SCRIPT_TO_RUN} ${params.FOLDER_NAME}",
+                        returnStatus: true
+                    )
+
+                    if (status != 0) {
+                        echo "\033[31mERROR: Script ${params.SCRIPT_TO_RUN} failed with exit code ${status}\033[0m"
+                        error "Stopping pipeline due to script failure."
+                    } else {
+                        echo "\033[32mSUCCESS: Script ${params.SCRIPT_TO_RUN} completed successfully.\033[0m"
+                    }
+                }
+            }
         }
     }
-
 }
