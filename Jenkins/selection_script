@@ -32,7 +32,7 @@ pipeline {
                         echo "Current directory: \$(pwd)"
                         cd Jenkins
                         ls -lrth
-                        sudo cat ${selectedAction}
+                       cat ${selectedAction}
                     """
                 }
             }
