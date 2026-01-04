@@ -3,7 +3,7 @@ pipeline
     agent any 
     parameters{
         choice(
-                name: 'ACTION'
+                name: 'ACTION',
                 choices:[
                         'Create Folder', 
                         'Add File',
