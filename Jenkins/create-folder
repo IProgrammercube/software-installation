@@ -12,7 +12,7 @@ pipeline{
         {
             steps
             {
-                checkout SCM
+                checkout scm
             }
         }
         stage('crete folder')
