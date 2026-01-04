@@ -1,23 +1,37 @@
-pipeline
-{
+pipeline {
     agent any
 
-    parameters{
-        string(name:'FOLDER_NAME',defaultValue:'NA',description:'')
+    parameters {
+        string(name: 'FOLDER_NAME', defaultValue: 'my-folder', description: 'Enter folder name')
     }
-    stages
-    {
-        stage('checkout scm')
-        {
-            steps
-            {
-                sh '''
-                echo "I am in Shelll"
-                fi
-                '''
-            }        
-        }
-        
 
+    stages {
+        stage('Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Check/Create Folder') {
+            steps {
+                sh '''
+                echo "Current workspace: $(pwd)"
+                echo "Listing workspace before folder check:"
+                ls -lrth
+
+                # Check if folder exists
+                if [ -d "$FOLDER_NAME" ]; then
+                    echo "Folder already exists: $FOLDER_NAME"
+                else
+                    echo "Folder does not exist. Creating folder: $FOLDER_NAME"
+                    mkdir -p "$FOLDER_NAME"
+                    echo "Folder created successfully"
+                fi
+
+                echo "Listing workspace after folder check:"
+                ls -lrth
+                '''
+            }
+        }
     }
 }
