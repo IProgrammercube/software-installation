@@ -26,10 +26,12 @@ pipeline
         {
             steps
             {
-                echo "you selected ${params.ACTION}"
-                sh '''
-                ls -lrth
+                 sh '''
+                    cd Jenkins/     
+            ls -lrth
                 '''
+                echo "you selected ${params.ACTION}"
+               
             }
 
         }
