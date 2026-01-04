@@ -1,33 +1,34 @@
-pipeline{
+pipeline {
     agent any
 
-    // Taking Value from user as parameter
-    parameters{
-        string(name: 'FOLDER-NAME', defaultValue:'NA' , description:'Enter your Folder name')
+    // Taking value from user as parameter
+    parameters {
+        string(
+            name: 'FOLDER_NAME',
+            defaultValue: 'NA',
+            description: 'Enter your folder name'
+        )
     }
 
-    stages
-    {
-        stage('checkout SCM')
-        {
-            steps
-            {
+    stages {
+
+        stage('Checkout SCM') {
+            steps {
                 checkout scm
             }
         }
-        stage('crete folder')
-        {
-                steps{
-                    sh '''
-                        if[ -d "${FOLDER-NAME} ; "] then
-                            echo "folder name is Already Exists"
-                        else
-                            echo "Create Folder"
-                            fi
-                    '''
-                }
+
+        stage('Create folder') {
+            steps {
+                sh '''
+                    if [ -d "$FOLDER_NAME" ]; then
+                        echo "Folder already exists"
+                    else
+                        echo "Creating folder"
+                        mkdir "$FOLDER_NAME"
+                    fi
+                '''
+            }
         }
-
     }
-
 }
