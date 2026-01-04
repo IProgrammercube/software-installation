@@ -1,42 +1,14 @@
-pipeline {
-    agent any
-    parameters {
-        string(
-            name: 'FOLDER_NAME',
-            defaultValue: 'NA', 
-            description: 'Please enter folder name'
-        )
-    }
+#!/bin/bash
 
-    stages {
-        stage('Checkout SCM') {
-            steps {
-                checkout scm
-            }
-        }
+echo "Running create-folder script"
 
-        stage('Create Folder') {
-            steps {
-                script {
-                    // Assign Jenkins parameter to a Groovy variable
-                    def folderName = params.FOLDER_NAME
+FOLDER_NAME="demo-folder"
 
-                    // Run shell commands with the variable
-                    sh """
-                        echo "Current Working Directory: \$(pwd)"
-                        ls -lrth
+if [ -d "$FOLDER_NAME" ]; then
+    echo "Folder already exists: $FOLDER_NAME"
+else
+    mkdir -p "$FOLDER_NAME"
+    echo "Folder created: $FOLDER_NAME"
+fi
 
-                        if [ -d "${folderName}" ]; then
-                            echo "Folder already exists: ${folderName}"
-                        else
-                            mkdir -p "${folderName}"
-                            echo "Created folder: ${folderName}"
-                            echo "Listing Directory:"
-                            ls -lrth
-                        fi
-                    """
-                }
-            }
-        }
-    }
-}
+ls -lrth
