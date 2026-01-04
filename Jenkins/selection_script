@@ -30,7 +30,7 @@ pipeline
 
                 echo "NOTE : list of script are presnet "
                 sh '''
-                cd /Jenkins
+                cd Jenkins
                 ls -lrth
                 '''
             }
