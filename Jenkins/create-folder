@@ -1,34 +1,23 @@
-pipeline {
+pipleline
+{
     agent any
 
-    // Taking value from user as parameter
-    parameters {
-        string(
-            name: 'FOLDER_NAME',
-            defaultValue: 'NA',
-            description: 'Enter your folder name'
-        )
+    parameters{
+        string(name:'FOLDER_NAME',defaultValue:'NA',description:'')
     }
-
-    stages {
-
-        stage('Checkout SCM') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Create folder') {
-            steps {
+    stages
+    {
+        stage('checkout scm')
+        {
+            steps
+            {
                 sh '''
-                    if [ -d "$FOLDER_NAME" ]; then
-                        echo "Folder already exists"
-                    else
-                        echo "Creating folder"
-                        
-                    fi
+                echo "I am in Shelll"
+                fi
                 '''
-            }
+            }        
         }
+        
+
     }
 }
