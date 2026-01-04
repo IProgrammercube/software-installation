@@ -3,7 +3,14 @@ set -e
 
 FOLDER_NAME="$1"
 
+if [ -d "${FOLDER_NAME}" ]; then
+echo "this  folder is already present";
+pwd 
+ls -lrth
+else
+
 echo "Creating folder: $FOLDER_NAME"
 
 mkdir -p "$FOLDER_NAME"
 ls -lrth
+echo "+++++++++++++++++++"
