@@ -30,7 +30,7 @@ pipeline {
         stage('Run Selected Script') {
             steps {
                 script {
-                    def scriptPath = "Jenkins/${params.ACTION}.sh"
+                    def scriptPath = "Jenkins/${params.ACTION}"
 
                     echo "Running script: ${scriptPath}"
 
