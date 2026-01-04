@@ -27,6 +27,9 @@ pipeline
             steps
             {
                 echo "you selected ${params.ACTION}"
+                sh '''
+                ls -lrth
+                '''
             }
 
         }
