@@ -18,7 +18,7 @@ pipeline
         {
             steps{
                   sh '''
-                  echo "current Working Directory ${pwd}"
+                  echo "current Working Directory $(pwd"
                   ls -lrth
 
                   # check if the folder exists
@@ -26,7 +26,7 @@ pipeline
                       echo "Folder name is exists"
                   else
                       mkdir -p "$FOLDER_NAME"
-                      echo "Listing Directory ${pwd}"
+                      echo "Listing Directory $pwd"
                       ls -lrth   
                   fi
                   '''
