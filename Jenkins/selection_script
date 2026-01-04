@@ -27,7 +27,8 @@ pipeline
         {
             steps
             {
-                echo "you selected ${params.ACTION}"
+                script{
+                     echo "you selected ${params.ACTION}"
                 def selectedAction = params.ACTION
                 echo "NOTE : list of script are presnet "
               
@@ -37,6 +38,8 @@ pipeline
                 ls -lrth
                 sudo cat ${selectedAction"
                 '''
+                }
+               
             }
 
         }
