@@ -1,29 +1,30 @@
 pipeline {
     agent any
-
     parameters {
-        string(
-            name: 'FOLDER_NAME',
-            defaultValue: 'demo-folder',
-            description: 'Enter folder name to create'
-        )
+        string(name: 'FOLDER_NAME', defaultValue: 'my-folder', description: 'Folder to create')
     }
-
     stages {
-        stage('Checkout') {
+        stage('Check and Create Folder') {
             steps {
-                checkout scm
+                script {
+                    // Use Groovy to check if folder exists
+                    if (fileExists(params.FOLDER_NAME)) {
+                        echo "Folder already exists: ${params.FOLDER_NAME}"
+                    } else {
+                        echo "Folder does not exist. Creating folder: ${params.FOLDER_NAME}"
+                        // Run Linux command to create folder
+                        sh "mkdir -p ${params.FOLDER_NAME}"
+                        echo "Folder created successfully: ${params.FOLDER_NAME}"
+                        // Optionally list folder details
+                        sh "ls -ld ${params.FOLDER_NAME}"
+                    }
+                }
             }
         }
 
-        stage('Create Folder') {
+        stage('Other Step') {
             steps {
-                sh '''
-                   echo "Creating folder: ${FOLDER_NAME}"
-                   mkdir -p "${FOLDER_NAME}"
-                   echo "Folder created successfully"
-                   ls -ld "${FOLDER_NAME}"
-                '''
+                echo "This is the next step after checking/creating the folder."
             }
         }
     }
