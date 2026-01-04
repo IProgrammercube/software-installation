@@ -12,3 +12,16 @@ else
 fi
 
 ls -lrth
+
+    parameters {
+        choice(
+            name: 'ACTION',
+            choices: [
+                'create-folder',
+                'add-file',
+                'append-text',
+                'replace-text'
+            ],
+            description: 'Select the script to run'
+        )
+    }
