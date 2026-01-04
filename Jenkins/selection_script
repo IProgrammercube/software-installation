@@ -1,39 +1,45 @@
 pipeline {
-    agent any 
+    agent any
+
     parameters {
         choice(
             name: 'ACTION',
             choices: [
                 'create-folder',
-                'selection_script', 
-                'Add File',
-                'Append text', 
-                'Replace text'
+                'selection_script',
+                'add-file',
+                'append-text',
+                'replace-text'
             ],
             description: 'Select the Action you want to perform'
         )
     }
 
     stages {
-        stage('checkout SCM') {
+        stage('Checkout SCM') {
             steps {
                 checkout scm
             }
         }
 
-        stage('select option') {
+        stage('Execute Selected Script') {
             steps {
                 script {
-                    echo "You selected: ${params.ACTION}"
+                    // Assign to Groovy variable
                     def selectedAction = params.ACTION
-                    echo "NOTE: list of scripts present in Jenkins folder:"
+                    echo "You selected: ${selectedAction}"
 
-                    sh """
-                        echo "Current directory: \$(pwd)"
-                        cd Jenkins
-                        ls -lrth
-                       cat ${selectedAction}
-                    """
+                    // Verify if script exists
+                    def scriptPath = "Jenkins/${selectedAction}"
+                    if (!fileExists(scriptPath)) {
+                        error "Script ${scriptPath} does not exist in repository!"
+                    }
+
+                    // Make sure script is executable
+                    sh "chmod +x ${scriptPath}"
+
+                    // Execute the script
+                    sh "./${scriptPath}"
                 }
             }
         }
