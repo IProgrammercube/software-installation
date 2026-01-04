@@ -1,0 +1,38 @@
+pipeline
+{
+    agent any 
+    parameters{
+        choice(
+                name: 'ACTION',
+                choices:[
+                        'Create Folder', 
+                        'Add File',
+                        'Append text', 
+                        'Replace text'
+                        ],
+                description: 'select the Action you want To perform'
+            )
+    }
+
+    stages
+    {
+        stage('checkout SCM')
+        {
+            steps{
+                checkout scm
+            }
+        }
+        stage('select option')
+        {
+            steps
+            {
+                echo "you selected ${params.ACTION}"
+                sh '''
+                ls -lrth
+                '''
+            }
+
+        }
+    }
+
+}
