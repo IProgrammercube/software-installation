@@ -29,6 +29,7 @@ pipeline
                 echo "you selected ${params.ACTION}"
 
                 echo "NOTE : list of script are presnet "
+                echo "$(pwd)"
                 sh '''
                 cd Jenkins
                 ls -lrth
