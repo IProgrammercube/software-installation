@@ -6,12 +6,11 @@ pipeline {
             name: 'ACTION',
             choices: [
                 'create-folder',
-                'selection_script',
                 'add-file',
                 'append-text',
                 'replace-text'
             ],
-            description: 'Select the Action you want to perform'
+            description: 'Select the script to run'
         )
     }
 
@@ -22,23 +21,22 @@ pipeline {
             }
         }
 
-        stage('Execute Selected Script') {
+        stage('Run Selected Script') {
             steps {
                 script {
-                    // Assign to Groovy variable
-                    def selectedAction = params.ACTION
-                    echo "You selected: ${selectedAction}"
+                    echo "Selected script: ${params.ACTION}"
 
-                    // Verify if script exists
-                    def scriptPath = "Jenkins/${selectedAction}"
+                    def scriptPath = "Jenkins/${params.ACTION}"
+
+                    // Safety check
                     if (!fileExists(scriptPath)) {
-                        error "Script ${scriptPath} does not exist in repository!"
+                        error "Script '${scriptPath}' not found in repo"
                     }
 
-                    // Make sure script is executable
+                    // Make executable
                     sh "chmod +x ${scriptPath}"
 
-                    // Execute the script
+                    // Execute
                     sh "./${scriptPath}"
                 }
             }

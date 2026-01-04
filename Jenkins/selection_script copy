@@ -1,38 +1,47 @@
-pipeline
-{
-    agent any 
-    parameters{
+pipeline {
+    agent any
+
+    parameters {
         choice(
-                name: 'ACTION',
-                choices:[
-                        'Create Folder', 
-                        'Add File',
-                        'Append text', 
-                        'Replace text'
-                        ],
-                description: 'select the Action you want To perform'
-            )
+            name: 'ACTION',
+            choices: [
+                'create-folder',
+                'selection_script',
+                'add-file',
+                'append-text',
+                'replace-text'
+            ],
+            description: 'Select the Action you want to perform'
+        )
     }
 
-    stages
-    {
-        stage('checkout SCM')
-        {
-            steps{
+    stages {
+        stage('Checkout SCM') {
+            steps {
                 checkout scm
             }
         }
-        stage('select option')
-        {
-            steps
-            {
-                echo "you selected ${params.ACTION}"
-                sh '''
-                ls -lrth
-                '''
-            }
 
+        stage('Execute Selected Script') {
+            steps {
+                script {
+                    // Assign to Groovy variable
+                    def selectedAction = params.ACTION
+                    echo "You selected: ${selectedAction}"
+
+                    // Verify if script exists
+                    def scriptPath = "Jenkins/${selectedAction}"
+                    if (!fileExists(scriptPath)) {
+                        error "Script ${scriptPath} does not exist in repository!"
+                    }
+
+                    // Make sure script is executable
+                    sh "chmod +x ${scriptPath}"
+
+                    // Execute the script
+                    sh "./${scriptPath}"
+                }
+            }
         }
     }
-
 }
