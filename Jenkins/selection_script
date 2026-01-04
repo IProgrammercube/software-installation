@@ -12,10 +12,16 @@ pipeline {
             ],
             description: 'Select the script to run'
         )
+
+        string(
+            name: 'TARGET_NAME',
+            defaultValue: 'demo',
+            description: 'Folder/File name'
+        )
     }
 
     stages {
-        stage('Checkout SCM') {
+        stage('Checkout') {
             steps {
                 checkout scm
             }
@@ -24,20 +30,18 @@ pipeline {
         stage('Run Selected Script') {
             steps {
                 script {
-                    echo "Selected script: ${params.ACTION}"
+                    def scriptPath = "Jenkins/${params.ACTION}.sh"
 
-                    def scriptPath = "Jenkins/${params.ACTION}"
+                    echo "Running script: ${scriptPath}"
 
-                    // Safety check
                     if (!fileExists(scriptPath)) {
-                        error "Script '${scriptPath}' not found in repo"
+                        error "❌ Script not found: ${scriptPath}"
                     }
 
-                    // Make executable
-                    sh "chmod +x ${scriptPath}"
-
-                    // Execute
-                    sh "./${scriptPath}"
+                    sh """
+                        chmod +x ${scriptPath}
+                        ./${scriptPath} '${params.TARGET_NAME}'
+                    """
                 }
             }
         }

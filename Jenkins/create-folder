@@ -1,27 +1,9 @@
 #!/bin/bash
+set -e
 
-echo "Running create-folder script"
+FOLDER_NAME="$1"
 
-FOLDER_NAME="demo-folder"
+echo "Creating folder: $FOLDER_NAME"
 
-if [ -d "$FOLDER_NAME" ]; then
-    echo "Folder already exists: $FOLDER_NAME"
-else
-    mkdir -p "$FOLDER_NAME"
-    echo "Folder created: $FOLDER_NAME"
-fi
-
+mkdir -p "$FOLDER_NAME"
 ls -lrth
-
-    parameters {
-        choice(
-            name: 'ACTION',
-            choices: [
-                'create-folder',
-                'add-file',
-                'append-text',
-                'replace-text'
-            ],
-            description: 'Select the script to run'
-        )
-    }
