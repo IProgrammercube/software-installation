@@ -1,48 +1,41 @@
-pipeline
-{
+pipeline {
     agent any 
-    parameters{
+    parameters {
         choice(
-                name: 'ACTION',
-                choices:[
-                        'create-folder',
-                        'selection_script', 
-                        'Add File',
-                        'Append text', 
-                        'Replace text'
-                        ],
-                description: 'select the Action you want To perform'
-            )
+            name: 'ACTION',
+            choices: [
+                'create-folder',
+                'selection_script', 
+                'Add File',
+                'Append text', 
+                'Replace text'
+            ],
+            description: 'Select the Action you want to perform'
+        )
     }
 
-    stages
-    {
-        stage('checkout SCM')
-        {
-            steps{
+    stages {
+        stage('checkout SCM') {
+            steps {
                 checkout scm
             }
         }
-        stage('select option')
-        {
-            steps
-            {
-                script{
-                     echo "you selected ${params.ACTION}"
-                def selectedAction = params.ACTION
-                echo "NOTE : list of script are presnet "
-              
-                sh '''
-                echo "$(pwd)"
-                cd Jenkins
-                ls -lrth
-                sudo cat ${selectedAction"
-                '''
-                }
-               
-            }
 
+        stage('select option') {
+            steps {
+                script {
+                    echo "You selected: ${params.ACTION}"
+                    def selectedAction = params.ACTION
+                    echo "NOTE: list of scripts present in Jenkins folder:"
+
+                    sh """
+                        echo "Current directory: \$(pwd)"
+                        cd Jenkins
+                        ls -lrth
+                        sudo cat ${selectedAction}
+                    """
+                }
+            }
         }
     }
-
 }
