@@ -10,7 +10,7 @@ pipeline
         {
             steps    
             {
-                    echo "You enter this ${USER_NAME}"
+                    echo "You enter this ${params.USER_NAME}"
             }
         }
     }
