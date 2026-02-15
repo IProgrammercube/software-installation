@@ -5,7 +5,7 @@ parameters {
 choice(
 name: 'ACTION',
 choices: [
-'create-folder',
+'create-folsder',
 'add-file',
 'append-text',
 'replace-text'
