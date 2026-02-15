@@ -5,6 +5,8 @@ pipeline {
         string(name: 'USERNAME', defaultValue: 'Roshan', description: 'Enter your name')
         choice(name: 'USERSELECT', choices: ['dev', 'qa', 'prod'], description: 'Select Environment')
         booleanParam(name: 'USERSTATE', defaultValue: true, description: 'Deploy or not')
+        password(name: 'PASS', defaultValue: '')
+        file(name: 'UPLOAD_FILE', description: 'Upload file')
     }
 
     stages {
