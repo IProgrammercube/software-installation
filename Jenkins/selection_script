@@ -1,18 +1,23 @@
-pipeline
-{
+pipeline {
     agent any
-    parameters{ 
-            string(name: 'USER_NAME', defaultValue: 'Enter your Value', description: 'Add you name here')
-            choice(name: 'ENV', choices: ['dev', 'qa', 'prod'], description: 'Select Environment')
-            booleanParam(name: 'DEPLOY', defaultValue: true, description: 'Deploy or not')
+
+    parameters {
+        string(name: 'USERNAME', defaultValue: 'Roshan', description: 'Enter your name')
+        choice(name: 'ENV', choices: ['dev', 'qa', 'prod'], description: 'Select Environment')
+        booleanParam(name: 'DEPLOY', defaultValue: true, description: 'Deploy or not')
     }
-    stages
-    {
-        stage("Hello World")
-        {
-            steps    
-            {
-                    echo "You enter this ${params.USER_NAME}"
+
+    stages {
+        stage('Print Params') {
+            steps {
+                echo "Username: ${params.USERNAME}"
+                echo "Environment: ${params.ENV}"
+                echo "Deploy: ${params.DEPLOY}"
+
+                sh '''
+                  echo "Shell Username = $USERNAME"
+                  echo "Shell Env = $ENV"
+                '''
             }
         }
     }
