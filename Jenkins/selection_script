@@ -3,6 +3,8 @@ pipeline
     agent any
     parameters{ 
             string(name: 'USER_NAME', defaultValue: 'Enter your Value', description: 'Add you name here')
+            choice(name: 'ENV', choices: ['dev', 'qa', 'prod'], description: 'Select Environment')
+            booleanParam(name: 'DEPLOY', defaultValue: true, description: 'Deploy or not')
     }
     stages
     {
