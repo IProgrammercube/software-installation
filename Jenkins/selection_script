@@ -1,13 +1,16 @@
 pipeline
 {
     agent any
+    parameter{
+            string(name: 'USER_NAME', defaultValue: 'Enter your Value', defaultString: 'Add you name here')
+    }
     stages
     {
         stage("Hello World")
         {
             steps    
             {
-                    echo "Helllo Worl"
+                    echo "You enter this ${USER_NAME}"
             }
         }
     }
