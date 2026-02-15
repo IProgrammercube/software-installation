@@ -2,7 +2,7 @@ pipeline
 {
     agent any
     parameters{ 
-            string(name: 'USER_NAME', defaultValue: 'Enter your Value', defaultString: 'Add you name here')
+            string(name: 'USER_NAME', defaultValue: 'Enter your Value', description: 'Add you name here')
     }
     stages
     {
