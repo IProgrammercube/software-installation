@@ -31,7 +31,7 @@ pipeline {
         }
     }
 // Delete the Workspace 
- post {
+ /*post {
         always {
             deleteDir()
         }
@@ -41,6 +41,6 @@ pipeline {
         failure {
             echo "Build Failed"
         }
-    }
+    }*/
 
 }
