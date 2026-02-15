@@ -19,7 +19,7 @@ pipeline {
         stage('Read ENV File') {
             steps {
                 script {
-                    def envVars = readEnvFile("Jenkins/env")
+                    def envVars = readEnvFile("env")
 
                     echo "--------------------------------"
                     echo "APP_NAME = ${envVars.APP_NAME}"
