@@ -3,16 +3,16 @@ pipeline {
 
     parameters {
         string(name: 'USERNAME', defaultValue: 'Roshan', description: 'Enter your name')
-        choice(name: 'ENV', choices: ['dev', 'qa', 'prod'], description: 'Select Environment')
-        booleanParam(name: 'DEPLOY', defaultValue: true, description: 'Deploy or not')
+        choice(name: 'USERSELECT', choices: ['dev', 'qa', 'prod'], description: 'Select Environment')
+        booleanParam(name: 'USERSTATE', defaultValue: true, description: 'Deploy or not')
     }
 
     stages {
         stage('Print Params') {
             steps {
                 echo "Username: ${params.USERNAME}"
-                echo "Environment: ${params.ENV}"
-                echo "Deploy: ${params.DEPLOY}"
+                echo "Environment: ${params.USERSELECT}"
+                echo "Deploy: ${params.USERSTATE}"
 
                 sh '''
                   echo "Shell Username = $USERNAME"
