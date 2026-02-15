@@ -1,1 +1,11 @@
-
+pipleline
+{
+  agent any 
+  stages
+  {
+    stage('Hello World')
+    {
+      echo "Roshan"
+    }
+  }
+}
