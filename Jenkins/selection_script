@@ -1,26 +1,15 @@
 pipeline {
     agent any
 
-    parameters {
-        string(name: 'USERNAME', defaultValue: 'Roshan', description: 'Enter your name')
-        choice(name: 'USERSELECT', choices: ['dev', 'qa', 'prod'], description: 'Select Environment')
-        booleanParam(name: 'USERSTATE', defaultValue: true, description: 'Deploy or not')
-        password(name: 'PASS', defaultValue: '')
-        file(name: 'UPLOAD_FILE', description: 'Upload file')
-        
-    }
+   
 
     stages {
         stage('Print Params') {
             steps {
-                echo "Username: ${params.USERNAME}"
-                echo "Environment: ${params.USERSELECT}"
-                echo "Deploy: ${params.USERSTATE}"
+                def envVars = readEnvFile("env")
 
-                sh '''
-                  echo "Shell Username = $USERNAME"
-                  echo "Shell Env = $ENV"
-                '''
+                echo "App: ${envVars.APP_NAME}"
+        q    echo "Env: ${envVars.ENV}"
             }
         }
     }
