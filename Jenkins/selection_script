@@ -30,4 +30,17 @@ pipeline {
             }
         }
     }
+// Delete the Workspace 
+ post {
+        always {
+            deleteDir()
+        }
+        success {
+            echo "Build Successful"
+        }
+        failure {
+            echo "Build Failed"
+        }
+    }
+
 }
