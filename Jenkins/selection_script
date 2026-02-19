@@ -3,7 +3,7 @@ pipeline
        agent any
        parameters{
                 string(name:'USER_NAME', defaultValue:'NA', description:'Please enter Your Name here...')
-                choice(name:"CHECK_ENV", choices:['ENV','DEV',''PRD], description:'Select your Envirnoment')
+                choice(name:"CHECK_ENV", choices:['ENV','DEV','PROD'], description:'Select your Envirnoment')
        }
         stages
         {
