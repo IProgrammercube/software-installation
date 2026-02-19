@@ -1,46 +1,12 @@
-def readEnvFile(String filePath) {
-    def map = [:]
-
-    readFile(filePath).split("\n").each { line ->
-        line = line.trim()
-
-        if (line && !line.startsWith("#")) {
-            def (key, value) = line.split("=", 2)
-            map[key.trim()] = value.trim()
-        }
-    }
-    return map
-}
-
-pipeline {
+pipleline
+{
     agent any
-
-    stages {
-        stage('Read ENV File') {
-            steps {
-                script {
-                    def envVars = readEnvFile("env")
-
-                    echo "--------------------------------"
-                    echo "APP_NAME = ${envVars.APP_NAME}"
-                    echo "ENV      = ${envVars.ENV}"
-                    echo "VERSION  = ${envVars.VERSION}"
-                    echo "--------------------------------"
-                }
+    stages
+        {
+            stage("Hello")
+            {
+                echo "Hello World"
             }
         }
-    }
-// Delete the Workspace 
- /*post {
-        always {
-            deleteDir()
-        }
-        success {
-            echo "Build Successful"
-        }
-        failure {
-            echo "Build Failed"
-        }
-    }*/
-
+    
 }
