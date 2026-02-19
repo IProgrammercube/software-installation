@@ -4,6 +4,12 @@ pipeline
        parameters{
                 string(name:'USER_NAME', defaultValue:'NA', description:'Please enter Your Name here...')
                 choice(name:"CHECK_ENV", choices:['ENV','DEV','PROD'], description:'Select your Envirnoment')
+               extendedChoice(
+                             name: 'SERVICES',
+                             type: 'PT_CHECKBOX',
+                             description: 'Select services to build & deploy',
+                             value: 'frontend,backend,auth-service,payment-service,notification'
+                         )
        }
         stages
         {
