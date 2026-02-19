@@ -10,7 +10,9 @@ pipeline
                 {
                         steps
                         {
-                                echo "Welcome ${USER_NAME}"
+                                sh '''
+                                          echo "Welcome User ${USER_NAME}"
+                                   '''
                         }
                 }
         }
