@@ -5,9 +5,12 @@ pipeline
         {
             stage("Hello")
             {
-                        sh '''
+                        steps
+                        {
+                            sh '''
                                 echo "HEllo World"
                         '''
+                        }
             }
         }
     
