@@ -1,14 +1,17 @@
-pipeline
+pipleline
 {
-        agent any
-    stages
+       agent any
+       parameters{
+                string(name:'USER_NAME', defaultValue:'NA', description:'Please enter Your Name here...')
+       }
+        stages
         {
-            stage("Hello")
-            {
-                steps
+                 stage("User Name Info")
                 {
-                        echo "I am On"
+                        steps
+                        {
+                                echo "Welcome ${USER_NAME}"
+                        }
                 }
-            }
         }
 }
