@@ -1,15 +1,13 @@
-pipeline {
-
+pipeline
+{
     agent any
-
-    stages {
-
-        stage('Hello World') {
-
-            steps {
-
-                echo 'Hello World from Jenkins Pipeline'
-
+    stages
+    {
+        stage
+        {
+            steps 
+            {
+                echo "My name is Roshan"
             }
         }
     }
