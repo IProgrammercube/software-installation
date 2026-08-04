@@ -18,20 +18,20 @@ pipeline
                 }
                
             }
-            stage("Build")
+            stage("deployed")
             {
 
                  steps
                 {
-                      echo "Welcome ti Build stage"
+                      echo "Welcome to deployed"
                 }
               
             }
-            stage('deployed')
+            stage('run')
             {
                  steps
                 {
-                    echo "Welcome To Deplotyed"
+                    echo "Welcome To run"
                 }
                 
             }
