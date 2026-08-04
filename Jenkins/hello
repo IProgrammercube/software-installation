@@ -1,13 +1,26 @@
 pipeline
 {
     agent any
-    stages
     {
-        stage('Name Printing stage')
+        stages
         {
-            steps 
+            stage('checkout')
             {
-                echo "My name is Roshan"
+                steps {
+                        echo "Welcome to checkout stage"
+                }
+            }
+            stage('Build')
+            {
+                echo "Welcome To build stage"
+            }
+            stage("Build")
+            {
+                echo "Welcome ti Build stage"
+            }
+            stage('deployed')
+            {
+                echo "Welcome To Deplotyed"
             }
         }
     }
