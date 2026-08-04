@@ -12,15 +12,28 @@ pipeline
             }
             stage('Build')
             {
-                echo "Welcome To build stage"
+                steps
+                {
+                     echo "Welcome To build stage"
+                }
+               
             }
             stage("Build")
             {
-                echo "Welcome ti Build stage"
+
+                 steps
+                {
+                      echo "Welcome ti Build stage"
+                }
+              
             }
             stage('deployed')
             {
-                echo "Welcome To Deplotyed"
+                 steps
+                {
+                    echo "Welcome To Deplotyed"
+                }
+                
             }
         }
     
