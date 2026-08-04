@@ -25,7 +25,7 @@ pipeline
                 {        
                         sh '''
                                     chmod 755 /home/ec2-user/build.sh
-                                    /home/ec2-user/build.sh
+                                  sudo  /home/ec2-user/build.sh
                         '''
                         echo "Welcome to deployed"
                 }
