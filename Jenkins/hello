@@ -24,7 +24,7 @@ pipeline
                  steps
                 {        
                         sh '''
-                                                 sudo  /home/ec2-user/build.sh
+                            /home/ec2-user/build.sh
                         '''
                         echo "Welcome to deployed"
                 }
