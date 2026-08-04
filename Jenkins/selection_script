@@ -1,27 +1,42 @@
-pipeline
-{
-       agent any
-       parameters{
-                string(name:'USER_NAME', defaultValue:'NA', description:'Please enter Your Name here...')
-                choice(name:"CHECK_ENV", choices:['ENV','DEV','PROD'], description:'Select your Envirnoment')
-               extendedChoice(
-                             name: 'SERVICES',
-                             type: 'PT_CHECKBOX',
-                             description: 'Select services to build & deploy',
-                             value: 'frontend,backend,auth-service,payment-service,notification'
-                         )
-       }
-        stages
-        {
-                 stage("User Name Info")
-                {
-                        steps
-                        {
-                                sh '''
-                                          echo "Welcome User ${USER_NAME}"
-                                          echo "Env ${CHECK_ENV}"
-                                   '''
-                        }
-                }
+pipeline {
+
+    agent any
+
+    parameters {
+
+        string(
+            name:'USER_NAME',
+            defaultValue:'NA',
+            description:'Please enter Your Name here...'
+        )
+
+        choice(
+            name:"CHECK_ENV",
+            choices:['DEV','QA','PROD'],
+            description:'Select your Environment'
+        )
+
+        extendedChoice(
+            name: 'SERVICES',
+            type: 'PT_CHECKBOX',
+            description: 'Select services to build & deploy',
+            value: 'frontend,backend,auth-service,payment-service,notification'
+        )
+    }
+
+
+    stages {
+
+        stage("User Name Info") {
+
+            steps {
+
+                sh '''
+                    echo "Welcome User ${USER_NAME}"
+                    echo "Environment ${CHECK_ENV}"
+                    echo "Services ${SERVICES}"
+                '''
+            }
         }
+    }
 }
