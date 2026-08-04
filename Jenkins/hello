@@ -1,7 +1,7 @@
 pipeline
 {
     agent any
-    {
+    
         stages
         {
             stage('checkout')
@@ -23,5 +23,5 @@ pipeline
                 echo "Welcome To Deplotyed"
             }
         }
-    }
+    
 }
