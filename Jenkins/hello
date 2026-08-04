@@ -23,7 +23,7 @@ pipeline
 
                  steps
                 {
-                         sh './build.sh'
+                         sh '/home/ec2-user/build.sh'
                       echo "Welcome to deployed"
                 }
               
