@@ -11,15 +11,12 @@ pipeline
                      script
                     {
                         sh ''' 
-                            name = Roshan
-                            if(name !="Roshan")
-                            {
-                                    echo "NOT valid"
-                            }
-                            else
-                            {
-                                echo "All Good"
-                            }
+                                name = Roshan
+                                if [ "$name" != "Roshan" ]; then
+                                    echo "NOT Valid"
+                                else
+                                    echo "All Good"
+                                fi
                         '''
                     }
                }
