@@ -5,9 +5,11 @@ pipeline
     {
         stage("develop")
         {
-                sh '''
+               steps{
+                     sh '''
                 echo "Hello world"
                 '''
+               }
         }
 
     }
