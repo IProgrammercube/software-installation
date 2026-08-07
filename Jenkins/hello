@@ -1,7 +1,7 @@
 pipeline
 {
     agent any
-    def name = "Roshan"
+  
 
     stages
     {
@@ -9,6 +9,7 @@ pipeline
         {
                steps{
                      sh '''
+                      def name = "Roshan"
                     echo "Hello ${name}"
                 '''
                }
