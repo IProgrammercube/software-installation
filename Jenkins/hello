@@ -10,10 +10,17 @@ pipeline
                steps{
                      script
                     {
-                    def name = "Roshan"
-                            sh ''' 
-                                echo "Hello ${name}"
-                            '''
+                        sh ''' 
+                            name = Roshan
+                            if(name !="Roshan")
+                            {
+                                    echo "NOT valid"
+                            }
+                            else
+                            {
+                                echo "All Good"
+                            }
+                        '''
                     }
                }
         }
