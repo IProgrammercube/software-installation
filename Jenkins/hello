@@ -1,40 +1,14 @@
 pipeline
 {
     agent any
-    
-        stages
+    stages
+    {
+        stage("")
         {
-            stage('checkout stage')
-            {
-                steps {
-                        echo "Welcome to checkout stage"
-                }
-            }
-            stage('Build')
-            {
-                steps
-                {
-                     echo "Welcome To build stage"
-                }
-               
-            }
-            stage("deployed")
-            {
-
-                 steps
-                {        
-                    echo "Welcome to deployed"
-                }
-              
-            }
-            stage('run')
-            {
-                 steps
-                {
-                    echo "Welcome To run"
-                }
-                
-            }
+                sh '''
+                echo "Hello world"
+                '''
         }
-    
+
+    }
 }
