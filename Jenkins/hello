@@ -10,10 +10,10 @@ pipeline
                steps{
                      script
                     {
-                            sh '''
-                      def name = "Roshan"
-                    echo "Hello ${name}"
-                '''
+                    def name = "Roshan"
+                            sh ''' 
+                                echo "Hello ${name}"
+                            '''
                     }
                }
         }
