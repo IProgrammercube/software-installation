@@ -10,14 +10,20 @@ pipeline
                steps{
                      script
                     {
-                        sh ''' 
+
+                        def servers = ["DEV", "UAT","PROD"]
+                         servers.each 
+                        {
+                            echo it
+                        }
+                        /* sh ''' 
                                 name="Roshan"
                                 if [ "$name" != "Roshan" ]; then
                                     echo "NOT Valid"
                                 else
                                     echo "All Good"
                                 fi
-                        '''
+                        '''*/
                     }
                }
         }
