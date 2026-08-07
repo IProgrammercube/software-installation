@@ -11,7 +11,7 @@ pipeline
                      script
                     {
                         sh ''' 
-                                name = Roshan
+                                name="Roshan"
                                 if [ "$name" != "Roshan" ]; then
                                     echo "NOT Valid"
                                 else
