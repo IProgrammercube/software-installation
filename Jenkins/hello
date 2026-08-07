@@ -1,13 +1,15 @@
 pipeline
 {
     agent any
+    def name = "Roshan"
+
     stages
     {
         stage("develop")
         {
                steps{
                      sh '''
-                echo "Hello world"
+                    echo "Hello ${name}"
                 '''
                }
         }
