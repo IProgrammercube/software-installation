@@ -25,7 +25,7 @@ pipeline {
                             booleanParam(
                                 name: environment,
                                 defaultValue: false,
-                                description: "Select ${environment}"
+                                //description: "Select ${environment}"
                             )
                         )
                     }
