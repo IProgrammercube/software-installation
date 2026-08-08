@@ -1,14 +1,18 @@
 pipeline {
 
     agent any
-
-    parameters {
+   
+parameters
+    {
         choice(
-            name: 'ENVIRONMENT',
-            choices: ['DEV', 'UAT', 'PROD'],
-            description: 'Select Environment'
+                name: "namespace"
+                choices: ["DEV","UAT","PRE"],
+                description: "Please select nameSpace"
         )
+
     }
+
+
 
     stages {
 
