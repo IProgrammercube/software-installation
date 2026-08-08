@@ -4,9 +4,12 @@ pipeline {
 
     parameters {
 
-        base64File(
-            name: 'CSV_FILE',
-            description: 'Upload CSV file'
+        stashedFile 'CSV_FILE'
+
+        string(
+            name: 'EMAIL',
+            defaultValue: 'your-email@gmail.com',
+            description: 'Email address'
         )
     }
 
@@ -18,14 +21,47 @@ pipeline {
 
                 script {
 
-                    echo "Reading CSV..."
+                    // Get uploaded CSV
+                    unstash 'CSV_FILE'
 
-                    sh '''
-                        echo "$CSV_FILE" | base64 -d > Testing.csv
+                    echo "CSV uploaded successfully"
 
-                        echo "CSV Content:"
-                        cat Testing.csv
-                    '''
+                    // Read CSV
+                    def data = readCSV file: 'CSV_FILE'
+
+                    // Create assignment list
+                    def assignmentList = []
+
+                    data.each { row ->
+
+                        assignmentList.add(
+                            "${row.Name} -> ${row.Assignment}"
+                        )
+                    }
+
+                    echo "Assignment List:"
+                    assignmentList.each { item ->
+                        echo item
+                    }
+
+                    // Send email with CSV attachment
+                    emailext(
+                        to: params.EMAIL,
+                        subject: 'Assignment List',
+                        body: """
+Hello,
+
+Assignment List:
+
+${assignmentList.join('\n')}
+
+Please find the CSV file attached.
+
+Thanks,
+Jenkins
+""",
+                        attachmentsPattern: 'CSV_FILE'
+                    )
                 }
             }
         }
