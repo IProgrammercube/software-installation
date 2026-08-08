@@ -14,8 +14,15 @@ pipeline
                        def emp=[
                                 name: "Roshan",
                                 age: "35"
-                       ]
-                        echo "${emp.name}"
+                       ]    
+                        if(emp.name == "Roshan")
+                        {
+                            echo "welcome. ${emp.name}"
+                        }
+                        else
+                        {
+                            echo "Please get Verifed First before get enter in system"
+                        }
                         /* sh ''' 
                                 name="Roshan"
                                 if [ "$name" != "Roshan" ]; then
