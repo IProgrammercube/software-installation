@@ -18,7 +18,12 @@ parameters
 
         stage('Print Selection') {
             steps {
-                echo "Selected Environment: ${params.namespace}"
+                       script
+                        {
+                             sh '''
+            echo "Selected Environment: $namespace"
+        '''
+                        }
             }
         }
     }
