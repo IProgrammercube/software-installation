@@ -4,7 +4,7 @@ pipeline {
 
     parameters {
 
-        fileParam(
+        file(
             name: 'CSV_FILE',
             description: 'Upload CSV file'
         )
@@ -18,26 +18,12 @@ pipeline {
 
                 script {
 
-                    echo "CSV file: ${params.CSV_FILE}"
+                    echo "CSV File: ${params.CSV_FILE}"
 
-                    def csv = readFile(params.CSV_FILE)
-
-                    echo "CSV Content:"
-                    echo csv
-
-                    def assignList = []
-
-                    csv.split('\n').drop(1).each { line ->
-                        if (line.trim()) {
-                            assignList.add(line.trim())
-                        }
-                    }
-
-                    echo "Assign List: ${assignList}"
-
-                    assignList.each { assign ->
-                        echo "Assign: ${assign}"
-                    }
+                    sh """
+                        echo "CSV Content:"
+                        cat "${params.CSV_FILE}"
+                    """
                 }
             }
         }
