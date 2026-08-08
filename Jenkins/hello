@@ -17,32 +17,29 @@ pipeline {
 
                 script {
 
-                    sh '''
-                        echo "Workspace:"
-                        pwd
+                    withFileParameter('CSV_FILE') {
 
-                        echo "Files:"
-                        ls -la
-                    '''
+                        echo "Reading CSV file..."
 
-                    def csv = sh(
-                        script: "cat '${params.CSV_FILE}'",
-                        returnStdout: true
-                    ).trim()
+                        def csv = readFile(env.CSV_FILE)
 
-                    def assignList = []
+                        echo "CSV Content:"
+                        echo csv
 
-                    csv.split('\n').drop(1).each { line ->
+                        def assignList = []
 
-                        if (line.trim()) {
-                            assignList.add(line.trim())
+                        csv.split('\n').drop(1).each { line ->
+
+                            if (line.trim()) {
+                                assignList.add(line.trim())
+                            }
                         }
-                    }
 
-                    echo "Assign List: ${assignList}"
+                        echo "Assign List: ${assignList}"
 
-                    assignList.each { assign ->
-                        echo "Assign: ${assign}"
+                        assignList.each { assign ->
+                            echo "Assign: ${assign}"
+                        }
                     }
                 }
             }
