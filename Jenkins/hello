@@ -3,7 +3,6 @@ pipeline {
     agent any
 
     parameters {
-
         file(
             name: 'CSV_FILE',
             description: 'Upload CSV file'
@@ -18,12 +17,26 @@ pipeline {
 
                 script {
 
-                    echo "Reading CSV file..."
+                    // Read CSV
+                    def csv = readFile params.CSV_FILE
 
-                    sh '''
-                        echo "CSV Content:"
-                        cat "$CSV_FILE"
-                    '''
+                    // Create List
+                    def assignList = []
+
+                    csv.split('\n').drop(1).each { line ->
+
+                        if (line.trim()) {
+                            assignList.add(line.trim())
+                        }
+                    }
+
+                    // Print List
+                    echo "Assign List: ${assignList}"
+
+                    // Print each value
+                    assignList.each { assign ->
+                        echo "Assign: ${assign}"
+                    }
                 }
             }
         }
