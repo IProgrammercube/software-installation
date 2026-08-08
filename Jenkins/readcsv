@@ -1,0 +1,33 @@
+pipeline {
+
+    agent any
+
+    parameters {
+
+        base64File(
+            name: 'CSV_FILE',
+            description: 'Upload CSV file'
+        )
+    }
+
+    stages {
+
+        stage('Read CSV') {
+
+            steps {
+
+                script {
+
+                    echo "Reading CSV..."
+
+                    sh '''
+                        echo "$CSV_FILE" | base64 -d > Testing.csv
+
+                        echo "CSV Content:"
+                        cat Testing.csv
+                    '''
+                }
+            }
+        }
+    }
+}
