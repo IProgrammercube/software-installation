@@ -1,0 +1,50 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Select Environment') {
+
+            steps {
+
+                script {
+                       sh '''
+                                pwd
+                        '''
+                // Read YAML
+                    def config = readYaml file: 'Jenkins/value.yaml'
+
+                    // Get environments
+                    def environments = config.environments
+
+                    // Create checkboxes
+                    def checkboxes = []
+
+                    environments.each { environment ->
+
+                        checkboxes.add(
+                            booleanParam(
+                                name: environment,
+                                defaultValue: false,
+                                //description: "Select ${environment}"
+                            )
+                        )
+                    }
+
+                    // Ask user
+                    def selection = input(
+                        message: 'Select Environments',
+                        parameters: checkboxes
+                    )
+
+                    // Get only selected
+                    def selected = selection.findAll { it.value }.keySet()
+
+                    // Print only selected
+                    echo "Selected: ${selected}"
+                }
+            }
+        }
+    }
+}
