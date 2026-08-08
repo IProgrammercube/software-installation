@@ -1,0 +1,22 @@
+pipeline {
+
+    agent any
+
+    parameters {
+
+        choice(
+            name: 'ENVIRONMENT',
+            choices: ['DEV', 'UAT', 'PRE'],
+            description: 'Select Environment'
+        )
+    }
+
+    stages {
+
+        stage('Print Selection') {
+            steps {
+                echo "Selected Environment: ${params.ENVIRONMENT}"
+            }
+        }
+    }
+}
