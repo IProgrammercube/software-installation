@@ -2,46 +2,50 @@ pipeline {
 
     agent any
 
-    parameters {
-
-        booleanParam(
-            name: 'DEVv',
-            defaultValue: false,
-            description: 'Select DEV'
-        )
-
-        booleanParam(
-            name: 'UAT',
-            defaultValue: false,
-            description: 'Select UAT'
-        )
-
-        booleanParam(
-            name: 'PRE',
-            defaultValue: false,
-            description: 'Select PRE'
-        )
-    }
-
     stages {
 
-        stage('Print Selection') {
+        stage('Read YAML') {
+
             steps {
 
                 script {
 
+                    // Read value.yaml
+                    def config = readYaml file: 'value.yaml'
+
+                    // Get environments list
+                    def environments = config.environments
+
+                    echo "Available environments: ${environments}"
+
+                    // Create checkbox parameters
+                    def checkboxes = []
+
+                    environments.each { environment ->
+
+                        checkboxes.add(
+                            booleanParam(
+                                name: environment,
+                                defaultValue: false,
+                                description: "Select ${environment}"
+                            )
+                        )
+                    }
+
+                    // Show selection screen
+                    def selection = input(
+                        message: 'Select Environments',
+                        parameters: checkboxes
+                    )
+
+                    // Create selected list
                     def selectedEnvironments = []
 
-                    if (params.DEV) {
-                        selectedEnvironments.add('DEV')
-                    }
+                    selection.each { environment, selected ->
 
-                    if (params.UAT) {
-                        selectedEnvironments.add('UAT')
-                    }
-
-                    if (params.PRE) {
-                        selectedEnvironments.add('PRE')
+                        if (selected) {
+                            selectedEnvironments.add(environment)
+                        }
                     }
 
                     echo "Selected Environments: ${selectedEnvironments}"
