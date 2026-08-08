@@ -11,21 +11,21 @@ pipeline {
 
     stages {
 
-        stage('Read CSV') {
+        stage('Check Upload') {
 
             steps {
 
-                withFileParameter('CSV_FILE') {
+                script {
+
+                    echo "CSV parameter:"
+                    echo "${params.CSV_FILE}"
 
                     sh '''
                         echo "Workspace:"
                         pwd
 
-                        echo "Files:"
+                        echo "Workspace files:"
                         ls -la
-
-                        echo "CSV Content:"
-                        cat "$CSV_FILE"
                     '''
                 }
             }
