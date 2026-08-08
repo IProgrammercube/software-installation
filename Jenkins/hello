@@ -8,7 +8,7 @@ pipeline {
             name: 'ENVIRONMENTS',
             type: 'PT_CHECKBOX',
             multiSelectDelimiter: ',',
-            value: 'DEV,UAT,PRE',
+            value: 'A,B,C',
             description: 'Select environments'
         )
     }
