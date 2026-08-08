@@ -32,19 +32,24 @@ pipeline {
                     // Create assignment list
                     def assignmentList = []
 
-                    data.each { row ->
+                    data.eachWithIndex { row, index ->
 
-                        assignmentList.add(
-                            "${row.Name} -> ${row.Assignment}"
-                        )
+                        // Skip header
+                        if (index > 0) {
+
+                            assignmentList.add(
+                                "${row[0]} -> ${row[2]}"
+                            )
+                        }
                     }
 
                     echo "Assignment List:"
+
                     assignmentList.each { item ->
                         echo item
                     }
 
-                    // Send email with CSV attachment
+                    // Send email
                     emailext(
                         to: params.EMAIL,
                         subject: 'Assignment List',
