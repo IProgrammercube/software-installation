@@ -3,7 +3,8 @@ pipeline {
     agent any
 
     parameters {
-        file(
+
+        base64File(
             name: 'CSV_FILE',
             description: 'Upload CSV file'
         )
@@ -11,21 +12,19 @@ pipeline {
 
     stages {
 
-        stage('Check Upload') {
+        stage('Read CSV') {
 
             steps {
 
                 script {
 
-                    echo "CSV parameter:"
-                    echo "${params.CSV_FILE}"
+                    echo "Reading CSV..."
 
                     sh '''
-                        echo "Workspace:"
-                        pwd
+                        echo "$CSV_FILE" | base64 -d > Testing.csv
 
-                        echo "Workspace files:"
-                        ls -la
+                        echo "CSV Content:"
+                        cat Testing.csv
                     '''
                 }
             }
