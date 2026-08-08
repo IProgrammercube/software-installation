@@ -3,7 +3,6 @@ pipeline {
     agent any
 
     parameters {
-
         file(
             name: 'CSV_FILE',
             description: 'Upload CSV file'
@@ -16,14 +15,18 @@ pipeline {
 
             steps {
 
-                script {
+                withFileParameter('CSV_FILE') {
 
-                    echo "CSV File: ${params.CSV_FILE}"
+                    sh '''
+                        echo "Workspace:"
+                        pwd
 
-                    sh """
+                        echo "Files:"
+                        ls -la
+
                         echo "CSV Content:"
-                        cat "${params.CSV_FILE}"
-                    """
+                        cat "$CSV_FILE"
+                    '''
                 }
             }
         }
