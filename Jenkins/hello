@@ -4,25 +4,56 @@ pipeline {
 
     parameters {
 
-        extendedChoice(
-            name: 'ENVIRONMENTS',
-            type: 'PT_CHECKBOX',
-            multiSelectDelimiter: ',',
-            value: 'A,B,C',
-            description: 'Select environments'
+        booleanParam(
+            name: 'DEV',
+            defaultValue: false,
+            description: 'Select DEV'
+        )
+
+        booleanParam(
+            name: 'UAT',
+            defaultValue: false,
+            description: 'Select UAT'
+        )
+
+        booleanParam(
+            name: 'PRE',
+            defaultValue: false,
+            description: 'Select PRE'
         )
     }
 
     stages {
 
         stage('Print Selection') {
+
             steps {
-                echo "Selected environments: ${params.ENVIRONMENTS}"
 
                 script {
-                    def selected = params.ENVIRONMENTS.split(',')
 
-                    selected.each { environment ->
+                    // Create empty list
+                    def selectedEnvironments = []
+
+                    // Check DEV checkbox
+                    if (params.DEV) {
+                        selectedEnvironments.add('DEV')
+                    }
+
+                    // Check UAT checkbox
+                    if (params.UAT) {
+                        selectedEnvironments.add('UAT')
+                    }
+
+                    // Check PRE checkbox
+                    if (params.PRE) {
+                        selectedEnvironments.add('PRE')
+                    }
+
+                    // Print complete list
+                    echo "Selected Environments: ${selectedEnvironments}"
+
+                    // Print each selected environment
+                    selectedEnvironments.each { environment ->
                         echo "Selected: ${environment}"
                     }
                 }
