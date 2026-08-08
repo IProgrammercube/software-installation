@@ -1,7 +1,14 @@
 pipeline
 {
     agent any
-  
+                            parameter
+                            {
+                                choice(
+                                            name: "Envirnoment",
+                                            choices: ["DEV","UAT","PRE"],
+                                            description: "Please select your"
+                                )
+                            }
 
     stages
     {
@@ -10,13 +17,7 @@ pipeline
                steps{
                      script
                     {
-                             parameters {
-    choice(
-        name: 'ENVIRONMENT',
-        choices: ['dev', 'uat', 'prod'],
-        description: 'Select environment'
-    )
-}
+                        echo "your selection is ${Envirnoment}"
                        
                     }
                }
