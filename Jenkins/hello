@@ -13,7 +13,7 @@ pipeline {
                     // Read YAML
                     def config = readYaml file: 'Jenkins/value.yaml'
 
-                    // Get environments list
+                    // Get environments
                     def environments = config.environments
 
                     // Create checkboxes
@@ -30,14 +30,17 @@ pipeline {
                         )
                     }
 
-                    // Select
+                    // Ask user
                     def selection = input(
                         message: 'Select Environments',
                         parameters: checkboxes
                     )
 
-                    // Print selection
-                    echo "Selected Environments: ${selection}"
+                    // Get only selected
+                    def selected = selection.findAll { it.value }.keySet()
+
+                    // Print only selected
+                    echo "Selected: ${selected}"
                 }
             }
         }
