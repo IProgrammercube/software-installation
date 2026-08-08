@@ -1,7 +1,7 @@
 pipeline
 {
     agent any
-                            parameter
+                            parameters
                             {
                                 choice(
                                             name: "Envirnoment",
@@ -17,7 +17,7 @@ pipeline
                steps{
                      script
                     {
-                        echo "your selection is ${Envirnoment}"
+                        echo "your selection is ${params.ENVIRONMENT}"
                        
                     }
                }
