@@ -10,17 +10,12 @@ pipeline
                steps{
                      script
                     {
+                        def emp=["DEV", "UAT"]
 
+                           emp.each{
+                                echo it
+                           }
                        
-                         sh ''' 
-                               declare -A emp
-
-                                emp[name]="Roshan"
-                                emp[age]="35"
-                                
-                                echo "${emp[name]}"
-                                echo "${emp[age]}"
-                        '''
                     }
                }
         }
