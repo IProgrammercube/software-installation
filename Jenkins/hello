@@ -4,21 +4,19 @@ pipeline {
 
     stages {
 
-        stage('Read YAML') {
+        stage('Select Environment') {
 
             steps {
 
                 script {
 
-                    // Read value.yaml
+                    // Read YAML
                     def config = readYaml file: 'Jenkins/value.yaml'
 
                     // Get environments list
                     def environments = config.environments
 
-                    echo "Available environments: ${environments}"
-
-                    // Create checkbox parameters
+                    // Create checkboxes
                     def checkboxes = []
 
                     environments.each { environment ->
@@ -32,27 +30,14 @@ pipeline {
                         )
                     }
 
-                    // Show selection screen
+                    // Select
                     def selection = input(
                         message: 'Select Environments',
                         parameters: checkboxes
                     )
 
-                    // Create selected list
-                    def selectedEnvironments = []
-
-                    selection.each { environment, selected ->
-
-                        if (selected) {
-                            selectedEnvironments.add(environment)
-                        }
-                    }
-
-                    echo "Selected Environments: ${selectedEnvironments}"
-
-                    selectedEnvironments.each { environment ->
-                        echo "Selected: ${environment}"
-                    }
+                    // Print selection
+                    echo "Selected Environments: ${selection}"
                 }
             }
         }
