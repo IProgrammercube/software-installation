@@ -17,10 +17,19 @@ pipeline {
 
                 script {
 
-                    // Read CSV
-                    def csv = readFile params.CSV_FILE
+                    sh '''
+                        echo "Workspace:"
+                        pwd
 
-                    // Create List
+                        echo "Files:"
+                        ls -la
+                    '''
+
+                    def csv = sh(
+                        script: "cat '${params.CSV_FILE}'",
+                        returnStdout: true
+                    ).trim()
+
                     def assignList = []
 
                     csv.split('\n').drop(1).each { line ->
@@ -30,10 +39,8 @@ pipeline {
                         }
                     }
 
-                    // Print List
                     echo "Assign List: ${assignList}"
 
-                    // Print each value
                     assignList.each { assign ->
                         echo "Assign: ${assign}"
                     }
