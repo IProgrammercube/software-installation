@@ -10,14 +10,13 @@ pipeline
                steps{
                      script
                     {
-                          sh '''
-        emp=("Roshan" "Amit" "Rahul")
-
-        for name in "${emp[@]}"
-        do
-            echo "$name"
-        done
-    '''
+                             parameters {
+    choice(
+        name: 'ENVIRONMENT',
+        choices: ['dev', 'uat', 'prod'],
+        description: 'Select environment'
+    )
+}
                        
                     }
                }
