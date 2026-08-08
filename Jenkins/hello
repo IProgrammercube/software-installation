@@ -1,29 +1,31 @@
 pipeline {
 
     agent any
-   
-parameters
-    {
-        choice(
-                name: "namespace",
-                choices: ["DEV","UAT","PRE"],
-                description: "Please select nameSpace"
+
+    parameters {
+
+        extendedChoice(
+            name: 'ENVIRONMENTS',
+            type: 'PT_CHECKBOX',
+            multiSelectDelimiter: ',',
+            value: 'DEV,UAT,PRE',
+            description: 'Select environments'
         )
-
     }
-
-
 
     stages {
 
         stage('Print Selection') {
             steps {
-                       script
-                        {
-                             sh '''
-            echo "Selected Environment: $namespace"
-        '''
-                        }
+                echo "Selected environments: ${params.ENVIRONMENTS}"
+
+                script {
+                    def selected = params.ENVIRONMENTS.split(',')
+
+                    selected.each { environment ->
+                        echo "Selected: ${environment}"
+                    }
+                }
             }
         }
     }
