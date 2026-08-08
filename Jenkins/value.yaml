@@ -1,0 +1,4 @@
+environments:
+  - DEV
+  - UAT
+  - PRE
