@@ -11,11 +11,11 @@ pipeline
                      script
                     {
 
-                        def servers = ["DEV", "UAT","PROD"]
-                         servers.each 
-                        {
-                            echo it
-                        }
+                       def emp=[
+                                name: "Roshan",
+                                age: "35"
+                       ]
+                        echo "${emp.name}"
                         /* sh ''' 
                                 name="Roshan"
                                 if [ "$name" != "Roshan" ]; then
