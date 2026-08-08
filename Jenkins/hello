@@ -9,7 +9,7 @@ pipeline {
             steps {
 
                 script {
-
+                        pwd
                     // Read YAML
                     def config = readYaml file: 'Jenkins/value.yaml'
 
