@@ -1,1 +1,56 @@
+pipeline {
 
+    agent any
+
+    parameters {
+
+        booleanParam(
+            name: 'DEVv',
+            defaultValue: false,
+            description: 'Select DEV'
+        )
+
+        booleanParam(
+            name: 'UAT',
+            defaultValue: false,
+            description: 'Select UAT'
+        )
+
+        booleanParam(
+            name: 'PRE',
+            defaultValue: false,
+            description: 'Select PRE'
+        )
+    }
+
+    stages {
+
+        stage('Print Selection') {
+            steps {
+
+                script {
+
+                    def selectedEnvironments = []
+
+                    if (params.DEV) {
+                        selectedEnvironments.add('DEV')
+                    }
+
+                    if (params.UAT) {
+                        selectedEnvironments.add('UAT')
+                    }
+
+                    if (params.PRE) {
+                        selectedEnvironments.add('PRE')
+                    }
+
+                    echo "Selected Environments: ${selectedEnvironments}"
+
+                    selectedEnvironments.each { environment ->
+                        echo "Selected: ${environment}"
+                    }
+                }
+            }
+        }
+    }
+}
