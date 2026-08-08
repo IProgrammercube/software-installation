@@ -11,7 +11,7 @@ pipeline {
                 script {
 
                     // Read value.yaml
-                    def config = readYaml file: 'value.yaml'
+                    def config = readYaml file: 'Jenkins/value.yaml'
 
                     // Get environments list
                     def environments = config.environments
