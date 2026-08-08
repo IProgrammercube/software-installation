@@ -10,11 +10,14 @@ pipeline
                steps{
                      script
                     {
-                        def emp=["DEV", "UAT"]
+                          sh '''
+        emp=("Roshan" "Amit" "Rahul")
 
-                           emp.each{
-                                echo it
-                           }
+        for name in "${emp[@]}"
+        do
+            echo "$name"
+        done
+    '''
                        
                     }
                }
