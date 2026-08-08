@@ -5,7 +5,7 @@ pipeline {
 parameters
     {
         choice(
-                name: "namespace"
+                name: "namespace",
                 choices: ["DEV","UAT","PRE"],
                 description: "Please select nameSpace"
         )
