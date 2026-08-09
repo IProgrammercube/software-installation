@@ -1,39 +1,35 @@
 pipeline {
     agent any
-    parameters {
-        choice(name: 'ENVIRONMENT', choices: ['dev', 'prod'], description: 'Select environment')
-    }
     stages {
-        stage('Load Env File') {
+        stage('Load Default Env File') {
             steps {
                 script {
-                    // Pick the right env file based on parameter
-                    def envFile = ".env.${params.ENVIRONMENT}"
+                    // Always load the default .env file
+                    sh "set -a && source .env && set +a"
                     
-                    // Load all variables into Jenkins environment
-                    sh "set -a && source ${envFile} && set +a"
-                    
-                    // Print values (string, integer, boolean)
-                    echo "App Name: ${env.APP_NAME}"          // String
-                    echo "App Environment: ${env.APP_ENV}"   // String
-                    echo "App Port: ${env.APP_PORT}"         // Integer (still string here)
-                    echo "Debug Mode: ${env.DEBUG}"          // Boolean (string 'true'/'false')
-                    echo "AWS Region: ${env.AWS_REGION}"     // String
-                    echo "Build Number: ${env.BUILD_NUMBER}" // Integer (string)
+                    // Print values from .env
+                    echo "App Name: ${env.APP_NAME}"
+                    echo "App Environment: ${env.APP_ENV}"
+                    echo "App Port: ${env.APP_PORT}"
+                    echo "Database Host: ${env.DB_HOST}"
+                    echo "Database User: ${env.DB_USER}"
+                    echo "Debug Mode: ${env.DEBUG}"
+                    echo "AWS Region: ${env.AWS_REGION}"
+                    echo "Build Number: ${env.BUILD_NUMBER}"
                 }
             }
         }
         stage('Conditional Logic') {
             steps {
                 script {
-                    // Example: use boolean flag
+                    // Boolean check
                     if (env.DEBUG == 'true') {
                         echo "Debugging is enabled"
                     } else {
                         echo "Debugging is disabled"
                     }
 
-                    // Example: use integer conversion
+                    // Integer conversion
                     def maxConn = env.MAX_CONNECTIONS.toInteger()
                     if (maxConn > 50) {
                         echo "High connection limit: ${maxConn}"
