@@ -7,8 +7,8 @@ pipeline {
                     // Read .env file as properties
                     def props = readProperties file: 'Jenkins/.env'
 
-                    // Wrap properties into Jenkins environment safely
-                    withEnv(props.collect { k,v -> "${k}=${v}" }) {
+                    // Use 'item' instead of 'entry'
+                    withEnv(props.collect { item -> "${item.key}=${item.value}" }) {
                         echo "App Name: ${env.APP_NAME}"
                         echo "App Environment: ${env.APP_ENV}"
                         echo "App Port: ${env.APP_PORT}"
@@ -23,14 +23,12 @@ pipeline {
         stage('Conditional Logic') {
             steps {
                 script {
-                    // Boolean check
                     if (env.DEBUG == 'true') {
                         echo "Debugging is enabled"
                     } else {
                         echo "Debugging is disabled"
                     }
 
-                    // Safe integer conversion
                     def maxConn = env.MAX_CONNECTIONS ? env.MAX_CONNECTIONS.toInteger() : 0
                     if (maxConn > 50) {
                         echo "High connection limit: ${maxConn}"
