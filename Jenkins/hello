@@ -4,9 +4,14 @@ pipeline {
         stage('Load Env File') {
             steps {
                 script {
-                    // Adjust path to match where .env actually is
-                    sh "set -a && source Jenkins/.env && set +a"
-                    
+                    // Read .env file as properties
+                    def props = readProperties file: 'Jenkins/.env'
+
+                    // Inject each property into Jenkins env
+                    props.each { k, v ->
+                        env[k] = v
+                    }
+
                     // Print values
                     echo "App Name: ${env.APP_NAME}"
                     echo "App Environment: ${env.APP_ENV}"
@@ -21,13 +26,15 @@ pipeline {
         stage('Conditional Logic') {
             steps {
                 script {
+                    // Boolean check
                     if (env.DEBUG == 'true') {
                         echo "Debugging is enabled"
                     } else {
                         echo "Debugging is disabled"
                     }
 
-                    def maxConn = env.MAX_CONNECTIONS.toInteger()
+                    // Safe integer conversion
+                    def maxConn = env.MAX_CONNECTIONS ? env.MAX_CONNECTIONS.toInteger() : 0
                     if (maxConn > 50) {
                         echo "High connection limit: ${maxConn}"
                     } else {
