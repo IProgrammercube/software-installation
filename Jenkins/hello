@@ -1,72 +1,45 @@
 pipeline {
-
     agent any
-
     parameters {
-
-        stashedFile 'CSV_FILE'
-
-        string(
-            name: 'EMAIL',
-            defaultValue: 'your-email@gmail.com',
-            description: 'Email address'
-        )
+        choice(name: 'ENVIRONMENT', choices: ['dev', 'prod'], description: 'Select environment')
     }
-
     stages {
-
-        stage('Read CSV') {
-
+        stage('Load Env File') {
             steps {
-
                 script {
-
-                    // Get uploaded CSV
-                    unstash 'CSV_FILE'
-
-                    echo "CSV uploaded successfully"
-
-                    // Read CSV
-                    def data = readCSV file: 'CSV_FILE'
-
-                    // Create assignment list
-                    def assignmentList = []
-
-                    data.eachWithIndex { row, index ->
-
-                        // Skip header
-                        if (index > 0) {
-
-                            assignmentList.add(
-                                "${row[0]} -> ${row[2]}"
-                            )
-                        }
+                    // Pick the right env file based on parameter
+                    def envFile = ".env.${params.ENVIRONMENT}"
+                    
+                    // Load all variables into Jenkins environment
+                    sh "set -a && source ${envFile} && set +a"
+                    
+                    // Print values (string, integer, boolean)
+                    echo "App Name: ${env.APP_NAME}"          // String
+                    echo "App Environment: ${env.APP_ENV}"   // String
+                    echo "App Port: ${env.APP_PORT}"         // Integer (still string here)
+                    echo "Debug Mode: ${env.DEBUG}"          // Boolean (string 'true'/'false')
+                    echo "AWS Region: ${env.AWS_REGION}"     // String
+                    echo "Build Number: ${env.BUILD_NUMBER}" // Integer (string)
+                }
+            }
+        }
+        stage('Conditional Logic') {
+            steps {
+                script {
+                    // Example: use boolean flag
+                    if (env.DEBUG == 'true') {
+                        echo "Debugging is enabled"
+                    } else {
+                        echo "Debugging is disabled"
                     }
 
-                    echo "Assignment List:"
-
-                    assignmentList.each { item ->
-                        echo item
+                    // Example: use integer conversion
+                    def maxConn = env.MAX_CONNECTIONS.toInteger()
+                    if (maxConn > 50) {
+                        echo "High connection limit: ${maxConn}"
+                    } else {
+                        echo "Low connection limit: ${maxConn}"
                     }
-
-                    // Send email
-                    emailext(
-                        to: params.EMAIL,
-                        subject: 'Assignment List',
-                        body: """
-Hello,
-
-Assignment List:
-
-${assignmentList.join('\n')}
-
-Please find the CSV file attached.
-
-Thanks,
-Jenkins
-""",
-                        attachmentsPattern: 'CSV_FILE'
-                    )
                 }
             }
         }
