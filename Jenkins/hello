@@ -6,6 +6,7 @@ pipeline {
                 script {
                     sh'''
                         pwd
+                        ls -lrth
                     '''
                     // Always load the default .env file
                     sh "set -a && source .env && set +a"
