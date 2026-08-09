@@ -1,0 +1,74 @@
+pipeline {
+
+    agent any
+
+    parameters {
+
+        stashedFile 'CSV_FILE'
+
+        string(
+            name: 'EMAIL',
+            defaultValue: 'your-email@gmail.com',
+            description: 'Email address'
+        )
+    }
+
+    stages {
+
+        stage('Read CSV') {
+
+            steps {
+
+                script {
+
+                    // Get uploaded CSV
+                    unstash 'CSV_FILE'
+
+                    echo "CSV uploaded successfully"
+
+                    // Read CSV
+                    def data = readCSV file: 'CSV_FILE'
+
+                    // Create assignment list
+                    def assignmentList = []
+
+                    data.eachWithIndex { row, index ->
+
+                        // Skip header
+                        if (index > 0) {
+
+                            assignmentList.add(
+                                "${row[0]} -> ${row[2]}"
+                            )
+                        }
+                    }
+
+                    echo "Assignment List:"
+
+                    assignmentList.each { item ->
+                        echo item
+                    }
+
+                    // Send email
+                    emailext(
+                        to: params.EMAIL,
+                        subject: 'Assignment List',
+                        body: """
+Hello,
+
+Assignment List:
+
+${assignmentList.join('\n')}
+
+Please find the CSV file attached.
+
+Thanks,
+Jenkins
+""",
+                        attachmentsPattern: 'CSV_FILE'
+                    )
+                }
+            }
+        }
+    }
+}
