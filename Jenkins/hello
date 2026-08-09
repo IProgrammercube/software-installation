@@ -4,6 +4,9 @@ pipeline {
         stage('Load Default Env File') {
             steps {
                 script {
+                    sh'''
+                        pwd
+                    '''
                     // Always load the default .env file
                     sh "set -a && source .env && set +a"
                     
