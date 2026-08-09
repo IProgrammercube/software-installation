@@ -4,18 +4,13 @@ pipeline {
         stage('Load Default Env File') {
             steps {
                 script {
-                    sh'''
-                        pwd
-                        ls -lrth
-                    '''
                     // Always load the default .env file
                     sh "set -a && source .env && set +a"
                     
-                    // Print values from .env
+                    // Print values
                     echo "App Name: ${env.APP_NAME}"
                     echo "App Environment: ${env.APP_ENV}"
                     echo "App Port: ${env.APP_PORT}"
-                    echo "Database Host: ${env.DB_HOST}"
                     echo "Database User: ${env.DB_USER}"
                     echo "Debug Mode: ${env.DEBUG}"
                     echo "AWS Region: ${env.AWS_REGION}"
@@ -26,14 +21,12 @@ pipeline {
         stage('Conditional Logic') {
             steps {
                 script {
-                    // Boolean check
                     if (env.DEBUG == 'true') {
                         echo "Debugging is enabled"
                     } else {
                         echo "Debugging is disabled"
                     }
 
-                    // Integer conversion
                     def maxConn = env.MAX_CONNECTIONS.toInteger()
                     if (maxConn > 50) {
                         echo "High connection limit: ${maxConn}"
